@@ -1,47 +1,10 @@
 /* eslint-disable */
-import React, {useState ,useEffect } from 'react'
-import {NavLink} from 'react-router-dom'
-const DetailsContent = ({name, data}) => {
-  let [completePage, setCompletePage] = useState([])
-  
-  useEffect(() => {
-    if (data?.description) {
-      let splitedData = data?.description.split('.!')
-      let completePage = [];
-      let imageIndex = 0; // add an index for images
-      let skipImage = false; // flag to check if the last line was "Mod Info -"
-      splitedData.forEach((pageItem, index) => {
-        let lines = pageItem.split('\n');
-        let tempList = [];
-        lines.forEach(line => {
-          if (line.match(/^\d+\).+/g)) { // if line matches "number) text"
-            let newLine = line.replace(/^\d+\)\s*/, ''); // remove "number) "
-            tempList.push(newLine);
-          } else if (line == "Mod Info -") { // if line is "Mod Info -"
-            completePage.push(`<>${line}`); // add line as h3 to completePage
-            skipImage = true; // set skipImage to true
-          } else { // if line does not match "number) text"
-            completePage.push(line); // add line as plain text to tempList
-            skipImage = false; // reset skipImage to false
-          }
-        });
-        if (!skipImage && data?.image && data.image[imageIndex]) { // if image is available and skipImage is false
-          completePage.push(data.image[imageIndex]); // add image to completePage
-          imageIndex++; // increment image index only when an image is added
-        }
-        if (tempList.length > 0) {
-          completePage.push(tempList); // add tempList to completePage if it's not empty
-        }
-      });
-      let filteredCompletePage = completePage.filter(item => item !== '');
-      setCompletePage(filteredCompletePage);
-      // console.log(filteredCompletePage); // check filteredCompletePage
-    }
-  }, [data]);
-  
+import React from 'react'
+const DetailsContent = () => {
   return (
     <>
-   <div className="responsive-navbar offcanvas offcanvas-end" data-bs-backdrop="static" tabIndex={-1} id="navbarOffcanvas">
+  <div>
+  <div className="responsive-navbar offcanvas offcanvas-end" data-bs-backdrop="static" tabIndex={-1} id="navbarOffcanvas">
     <div className="offcanvas-header">
       <a href="index.html" className="logo d-inline-block">
         <img className="logo-light" src="/assets/img/logo.webp" alt="logo" />
@@ -309,11 +272,11 @@ const DetailsContent = ({name, data}) => {
   </div>
   <div className="breadcrumb-wrap">
     <div className="container">
-      <h2 className="breadcrumb-title">{name}</h2>
+      <h2 className="breadcrumb-title">Business Article Details</h2>
       <ul className="breadcrumb-menu list-style">
-        <li><NavLink to="/">Home</NavLink></li>
-        <li><a href="business.html">{data?.category}</a></li>
-        <li>{name}</li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="business.html">Business</a></li>
+        <li>Business Article Details</li>
       </ul>
     </div>
   </div>
@@ -323,36 +286,25 @@ const DetailsContent = ({name, data}) => {
         <div className="col-lg-8">
           <article>
             <div className="news-img">
-              <img src="/assets/img/news/telegram/telegram.png" alt="Image" />
-              <a href="business.html" className="news-cat">{data?.category}</a>
+              <img src="/assets/img/news/single-news-1.webp" alt="Image" />
+              <a href="business.html" className="news-cat">Business</a>
             </div>
             <ul className="news-metainfo list-style">
               <li className="author">
                 <span className="author-img">
                   <img src="/assets/img/author/author-thumb-1.webp" alt="Image" />
                 </span>
-                <a href="author.html">AliasgerB</a>
+                <a href="author.html">James William</a>
               </li>
-              <li><i className="fi fi-rr-calendar-minus" /><a href="news-by-date.html">{data?.upload_date}</a></li>
-              <li><i className="fi fi-rr-fire-flame-curved" />{data?.category}</li>
+              <li><i className="fi fi-rr-calendar-minus" /><a href="news-by-date.html">Mar 03, 2023</a></li>
+              <li><i className="fi fi-rr-clock-three" />15 Min Read</li>
             </ul>
             <div className="news-para">
-              <h1>{data?.app_name}</h1>
-              {completePage?.map((pageItem) => (
-                <>
-                {typeof(pageItem) === 'string' && pageItem != "<>Mod Info -" && !pageItem?.includes("/assets")  ? (<p>{pageItem}</p>) :null}
-                {typeof(pageItem) === 'string' && pageItem?.includes("<>") && !pageItem?.includes("/assets") ? (<h5 className='mt-2'>{pageItem.replace("<>", "")}</h5>) :null}
-                {typeof(pageItem) === 'string' && pageItem?.includes("/assets") ? (<img src={pageItem} />) :null}
-                {typeof(pageItem) === 'object' ? (<ul className="content-feature-list list-style mt-15">
-                  {pageItem?.map((lst) => (
-                  <li key={lst}><span><i class="flaticon-arrow-right"></i></span>
-                  {lst}</li>
-                  ))}
-                  </ul>) :null}
-                </>
-                ))}
+              <h1>Jiraiya Banks Wants To Teach You How To Build A House</h1>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's stand dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specim book. It has survived not only five <strong>gravida</strong> but also the leap into electronic typesetting, remaining essentially unchange was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum <a href="index.html">Ipsum</a> and more recently with desktop publishing software like Aldus Page maker including versions of Lorem Ipsum.</p>
+              <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
             </div>
-            {/* <div className="news-img">
+            <div className="news-img">
               <img src="/assets/img/news/single-news-2.webp" alt="Image" />
             </div>
             <div className="news-para">
@@ -398,17 +350,9 @@ const DetailsContent = ({name, data}) => {
                 <li>Risus commodo viverra manas accumsan lacus vel facilisis</li>
               </ol>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam culpa reprehenderit ad ipsa porro obcaecati accusantium tempore officiis tenetur est!</p>
-            </div> */}
-            {/* <div className="row">
-            <div className="col-lg-6 offset-lg-3">
-            <div className="option-item">
-  <NavLink to={data?.share_link} target="_blank" className="btn-two">Download {name}</NavLink>
-</div>
-              </div>
-            </div> */}
-
+            </div>
           </article>
-          {/* <div className="post-pagination">
+          <div className="post-pagination">
             <a className="prev-post" href="business-details.html">
               <span>PREVIOUS</span>
               <h6>The Future Of Business: Predictions And Trends To Watch</h6>
@@ -417,8 +361,8 @@ const DetailsContent = ({name, data}) => {
               <span>NEXT</span>
               <h6>From Start-up To Scale-up: Navigating Growth In Your Business</h6>
             </a>
-          </div> */}
-          <h3 className="comment-box-title">{data?.comment?.length} Comments</h3>
+          </div>
+          <h3 className="comment-box-title">3 Comments</h3>
           <div className="comment-item-wrap">
             <div className="comment-item">
               <div className="comment-author-img">
@@ -448,7 +392,7 @@ const DetailsContent = ({name, data}) => {
                 </div>
               </div>
             </div>
-            {/* <div className="comment-item reply">
+            <div className="comment-item reply">
               <div className="comment-author-img">
                 <img src="/assets/img/author/author-thumb-2.webp" alt="Image" />
               </div>
@@ -503,9 +447,9 @@ const DetailsContent = ({name, data}) => {
                   </div>
                 </div>
               </div>
-            </div> */}
+            </div>
           </div>
-          {/* <div id="cmt-form">
+          <div id="cmt-form">
             <div className="mb-30">
               <h3 className="comment-box-title">Leave A Comment</h3>
               <p>Your email address will not be published. Required fields are marked.</p>
@@ -540,9 +484,9 @@ const DetailsContent = ({name, data}) => {
                 </div>
               </div>
             </form>
-          </div> */}
+          </div>
         </div>
-        {/* <div className="col-lg-4">
+        <div className="col-lg-4">
           <div className="sidebar">
             <div className="sidebar-widget-two">
               <form action="#" className="search-box-widget">
@@ -652,10 +596,12 @@ const DetailsContent = ({name, data}) => {
               </ul>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   </div>
+</div>
+
     </>
   )
 }
